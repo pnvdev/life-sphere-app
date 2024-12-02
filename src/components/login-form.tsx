@@ -20,10 +20,7 @@ export function LoginForm() {
 
   const checkRegisteredUser = async (email: string): Promise<boolean> => {
     try {
-      const {data, error} = await supabase
-        .from<"users", Database["public"]["Tables"]["users"]["Row"]>("users")
-        .select("email")
-        .eq("email", email);
+      const {data, error} = await supabase.from("users").select("email").eq("email", email);
 
       if (error) {
         return false;
