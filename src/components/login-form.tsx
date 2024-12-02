@@ -83,15 +83,15 @@ export function LoginForm() {
     setError(null);
 
     try {
-      const {error: loginError} = await supabase.auth.signInWithPassword({
+      const {data, error: loginError} = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (loginError) {
         setError("Invalid credentials. Please try again.");
-      } else {
-        alert("Logged in successfully!");
+      } else if (data?.user) {
+        alert(`Logged in successfully! Welcome, ${data.user.email}`);
         router.push("/dashboard");
       }
     } catch (err) {
