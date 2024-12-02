@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@opentelemetry/api-logs": "^0.52.1",
+    "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.2",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.46.2",
     "@vercel/otel": "^1.9.2",
     "autoprefixer": "^10.4.20",
