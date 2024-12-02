@@ -8,7 +8,7 @@ import supabase from "@/db/api/client";
 function DashboardPage() {
   const [user, setUser] = useState<{
     id: string;
-    email: string | null;
+    email: string | undefined;
   } | null>(null);
 
   const router = useRouter();
@@ -22,7 +22,10 @@ function DashboardPage() {
       if (!user) {
         router.push("/auth");
       } else {
-        setUser(user);
+        setUser({
+          id: user.id,
+          email: user.email,
+        });
       }
     };
 
@@ -43,7 +46,7 @@ function DashboardPage() {
           const {error} = await supabase.auth.signOut();
 
           if (error) console.error("Error during logout:", error.message);
-          router.push("/auth");
+          router.push("/login");
         }}
       >
         Logout
