@@ -3,6 +3,7 @@
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 
+import {Database} from "@/db/types";
 import supabase from "@/db/api/client";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
@@ -10,24 +11,31 @@ import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 
 export function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [loadingLogin, setLoadingLogin] = useState(false);
-  const [loadingSignUp, setLoadingSignUp] = useState(false);
+  const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
+  const [loadingSignUp, setLoadingSignUp] = useState<boolean>(false);
   const router = useRouter();
 
-  const checkRegisteredUser = async (email: string) => {
-    const {data, error} = await supabase.from("users").select("email").eq("email", email);
+  const checkRegisteredUser = async (email: string): Promise<boolean> => {
+    try {
+      const {data, error} = await supabase
+        .from<"users", Database["public"]["Tables"]["users"]["Row"]>("users")
+        .select("email")
+        .eq("email", email);
 
-    if (error) {
+      if (error) {
+        return false;
+      }
+
+      return data && data.length > 0;
+    } catch {
       return false;
-    } else {
-      return data.length > 0;
     }
   };
 
-  const handleSignup = async () => {
+  const handleSignup = async (): Promise<void> => {
     setLoadingSignUp(true);
     setError(null);
 
@@ -37,20 +45,30 @@ export function LoginForm() {
       if (isRegistered) {
         setError("User already registered");
       } else {
-        const {error, data} = await supabase.auth.signUp({
+        const {error: signUpError, data} = await supabase.auth.signUp({
           email,
           password,
         });
 
-        if (error) {
+        if (signUpError) {
           setError("Error signing up");
-        } else {
-          const {
-            user: {id, email: userEmail},
-          } = data;
-          const {error} = await supabase.from("users").insert({id: id, email: userEmail});
+        } else if (data?.user) {
+          const {id, email: userEmail} = data.user;
 
-          alert("Check your email for the confirmation link!");
+          const user: Database["public"]["Tables"]["users"]["Insert"] = {
+            id: id,
+            email: userEmail || "",
+            name: "",
+          };
+
+          // Insert the user
+          const {error: insertError} = await supabase.from("users").insert([user]);
+
+          if (insertError) {
+            setError("Error saving user to database");
+          } else {
+            alert("Check your email for the confirmation link!");
+          }
         }
       }
     } catch (err) {
@@ -60,22 +78,22 @@ export function LoginForm() {
     }
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (): Promise<void> => {
     setLoadingLogin(true);
     setError(null);
 
     try {
-      const {error, data} = await supabase.auth.signInWithPassword({
+      const {error: loginError} = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) throw error;
-
-      alert("Logged in successfully!");
-      router.push("/dashboard");
-
-      // Redirigir al dashboard o página protegida
+      if (loginError) {
+        setError("Invalid credentials. Please try again.");
+      } else {
+        alert("Logged in successfully!");
+        router.push("/dashboard");
+      }
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -105,12 +123,7 @@ export function LoginForm() {
             />
           </div>
           <div className="grid gap-2">
-            <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              {/* <Link className="ml-auto inline-block text-sm underline" href="#">
-                Forgot your password?
-              </Link> */}
-            </div>
+            <Label htmlFor="password">Password</Label>
             <Input
               required
               id="password"
@@ -120,7 +133,7 @@ export function LoginForm() {
             />
           </div>
 
-          {error && <p className="error">{error}</p>}
+          {error && <p className="error text-red-500">{error}</p>}
           <Button
             className="w-full"
             disabled={loadingLogin || loadingSignUp}
@@ -137,16 +150,7 @@ export function LoginForm() {
           >
             {loadingSignUp ? "Signing up..." : "Sign Up"}
           </Button>
-          {/* <Button className="w-full" variant="outline">
-            Login with Google
-          </Button> */}
         </div>
-        {/* <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link className="underline" href="#">
-            Sign up
-          </Link>
-        </div> */}
       </CardContent>
     </Card>
   );
