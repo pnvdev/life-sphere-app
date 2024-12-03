@@ -20,7 +20,7 @@ function DashboardPage() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push("/auth");
+        router.push("/login");
       } else {
         setUser({
           id: user.id,
