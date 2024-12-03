@@ -3,6 +3,7 @@ import type {Metadata} from "next";
 import Link from "next/link";
 
 import "./globals.css";
+import {Toaster} from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "life-sphere-app",
@@ -18,6 +19,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
         </header>
         {children}
         <footer className="text-center leading-[4rem] opacity-70">life-sphere-app</footer>
+        <Toaster />
       </body>
     </html>
   );

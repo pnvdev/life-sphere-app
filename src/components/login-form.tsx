@@ -9,6 +9,7 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
+import {useToast} from "@/hooks/use-toast";
 
 export function LoginForm() {
   const [email, setEmail] = useState<string>("");
@@ -17,6 +18,7 @@ export function LoginForm() {
   const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
   const [loadingSignUp, setLoadingSignUp] = useState<boolean>(false);
   const router = useRouter();
+  const {toast} = useToast();
 
   const checkRegisteredUser = async (email: string): Promise<boolean> => {
     try {
@@ -33,6 +35,27 @@ export function LoginForm() {
   };
 
   const handleSignup = async (): Promise<void> => {
+    //validate inputs
+    if (!email || !password) {
+      setError("Please fill in all fields");
+
+      return;
+    }
+
+    //validate email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      setError("Invalid email");
+
+      return;
+    }
+    //validate password
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+
+      return;
+    }
     setLoadingSignUp(true);
     setError(null);
 
@@ -64,7 +87,10 @@ export function LoginForm() {
           if (insertError) {
             setError("Error saving user to database");
           } else {
-            alert("Check your email for the confirmation link!");
+            toast({
+              title: "Sign Up successfully!",
+              description: `Check your email for the confirmation link!`,
+            });
           }
         }
       }
@@ -76,6 +102,28 @@ export function LoginForm() {
   };
 
   const handleLogin = async (): Promise<void> => {
+    //validate inputs
+    if (!email || !password) {
+      setError("Please fill in all fields");
+
+      return;
+    }
+
+    //validate email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      setError("Invalid email");
+
+      return;
+    }
+    //validate password
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+
+      return;
+    }
+
     setLoadingLogin(true);
     setError(null);
 
@@ -88,7 +136,11 @@ export function LoginForm() {
       if (loginError) {
         setError("Invalid credentials. Please try again.");
       } else if (data?.user) {
-        alert(`Logged in successfully! Welcome, ${data.user.email}`);
+        toast({
+          duration: 3000,
+          title: "Logged in successfully!",
+          description: ` Welcome, ${data.user.email}`,
+        });
         router.push("/dashboard");
       }
     } catch (err) {
