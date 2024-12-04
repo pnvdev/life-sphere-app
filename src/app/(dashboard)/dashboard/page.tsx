@@ -20,7 +20,7 @@ function DashboardPage() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push("/login");
+        router.push("/");
       } else {
         setUser({
           id: user.id,
@@ -46,7 +46,7 @@ function DashboardPage() {
           const {error} = await supabase.auth.signOut();
 
           if (error) console.error("Error during logout:", error.message);
-          router.push("/login");
+          router.push("/");
         }}
       >
         Logout
