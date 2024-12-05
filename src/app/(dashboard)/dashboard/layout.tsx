@@ -1,7 +1,5 @@
 import type {Metadata} from "next";
 
-import Link from "next/link";
-
 import "../../globals.css";
 import {Toaster} from "@/components/ui/toaster";
 
@@ -13,12 +11,9 @@ export const metadata: Metadata = {
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en">
-      <body className="container m-auto grid min-h-screen grid-rows-[auto,1fr,auto] gap-8 bg-background px-4 font-sans antialiased">
-        <header className="text-xl font-bold leading-[4rem]">
-          <Link href="/">life-sphere-app</Link>
-        </header>
+      <body className="">
+        {/* <body className="grid min-h-screen grid-rows-[auto,1fr,auto] gap-8 bg-background px-4 font-sans antialiased"> */}
         {children}
-        <footer className="text-center leading-[4rem] opacity-70">life-sphere-app</footer>
         <Toaster />
       </body>
     </html>
