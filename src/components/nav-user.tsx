@@ -1,29 +1,39 @@
 "use client";
 
-import {BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles} from "lucide-react";
+import {
+  // BadgeCheck,
+  // Bell,
+  ChevronsUpDown,
+  // CreditCard,
+  LogOut,
+  // Sparkles
+} from "lucide-react";
+import {useRouter} from "next/navigation";
 
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
+  // DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  // DropdownMenuLabel,
+  // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar} from "@/components/ui/sidebar";
+import supabase from "@/db/api/client";
 
 export function NavUser({
   user,
 }: {
   user: {
-    name: string;
+    id: string;
     email: string;
     avatar: string;
   };
 }) {
   const {isMobile} = useSidebar();
+  const router = useRouter();
 
   return (
     <SidebarMenu>
@@ -35,7 +45,7 @@ export function NavUser({
               size="lg"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage alt={user.name} src={user.avatar} />
+                <AvatarImage alt={user.id} src={user.avatar} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -51,7 +61,7 @@ export function NavUser({
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
+            {/* <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage alt={user.name} src={user.avatar} />
@@ -63,14 +73,14 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            <DropdownMenuSeparator /> */}
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            </DropdownMenuGroup> */}
+            {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck />
@@ -84,9 +94,16 @@ export function NavUser({
                 <Bell />
                 Notifications
               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            </DropdownMenuGroup> */}
+            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuItem
+              onClick={async () => {
+                const {error} = await supabase.auth.signOut();
+
+                if (error) console.error("Error during logout:", error.message);
+                router.push("/");
+              }}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>

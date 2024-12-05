@@ -1,7 +1,9 @@
 import type {Metadata} from "next";
 
-import "../../globals.css";
+import "../globals.css";
 import {Toaster} from "@/components/ui/toaster";
+import {AppSidebar} from "@/components/app-sidebar";
+import {SidebarProvider} from "@/components/ui/sidebar";
 
 export const metadata: Metadata = {
   title: "life-sphere-app",
@@ -12,8 +14,10 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   return (
     <html lang="en">
       <body className="">
-        {/* <body className="grid min-h-screen grid-rows-[auto,1fr,auto] gap-8 bg-background px-4 font-sans antialiased"> */}
-        {children}
+        <SidebarProvider>
+          <AppSidebar />
+          {children}
+        </SidebarProvider>
         <Toaster />
       </body>
     </html>
