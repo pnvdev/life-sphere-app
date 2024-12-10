@@ -62,7 +62,7 @@ const data = {
       items: [
         {
           title: "Tasks",
-          url: "#",
+          url: "/dashboard/tasks",
         },
         // {
         //   title: "Starred",
