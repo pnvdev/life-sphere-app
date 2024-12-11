@@ -14,38 +14,41 @@ import {SidebarInset, SidebarTrigger} from "@/components/ui/sidebar";
 
 async function getData(): Promise<Payment[]> {
   // Fetch data from your API here.
+  //"backlog" | "todo" | "in progress" | "done" | "canceled"
+  //"low" | "medium" | "high"
   return [
     {
-      id: "m5gr84i9",
-      amount: 316,
-      status: "success",
-      email: "ken99@yahoo.com",
+      id: "f3b49d35-0d24-4953-8cae-a224156710e6",
+      title: "We need to bypass the neural TCP card!",
+      status: "backlog",
+      priority: "low",
     },
     {
-      id: "3u1reuv4",
-      amount: 242,
-      status: "success",
-      email: "Abe45@gmail.com",
+      id: "7e94ab86-833b-468b-b2d1-85b0f2f6515f",
+      title: "You can't compress the program without quantifying the open-source SSD pixel",
+      status: "todo",
+      priority: "medium",
     },
     {
-      id: "derv1ws0",
-      amount: 837,
-      status: "processing",
-      email: "Monserrat44@gmail.com",
+      id: "3a058804-232a-4e11-a883-26137e4851f0",
+      title: "I'll parse the wireless SSL protocol, that should driver the API panel!",
+      status: "in progress",
+      priority: "high",
     },
     {
-      id: "5kma53ae",
-      amount: 874,
-      status: "success",
-      email: "Silas22@gmail.com",
+      id: "6239c225-1461-49d3-8b5c-e775828f0802",
+      title:
+        "Generating the driver won't do anything, we need to quantify the 1080p SMTP bandwidth",
+      status: "done",
+      priority: "low",
     },
     {
-      id: "bhqecj4p",
-      amount: 721,
-      status: "failed",
-      email: "carmella@hotmail.com",
+      id: "f1b73c95-40f2-4d56-86d9-1601a8f8dfd9",
+      title:
+        "Calculating the bus won't do anything, we need to navigate the back-end JSON protocol!",
+      status: "canceled",
+      priority: "high",
     },
-    // ...
   ];
 }
 
@@ -61,7 +64,11 @@ export default async function DemoPage() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+                <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="#">Personal</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>

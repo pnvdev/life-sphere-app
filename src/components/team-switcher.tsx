@@ -2,6 +2,7 @@
 
 import * as React from "react";
 // import {ChevronsUpDown, Plus} from "lucide-react";
+import {useRouter} from "next/navigation";
 
 import {
   DropdownMenu,
@@ -30,6 +31,7 @@ export function TeamSwitcher({
 }) {
   // const {isMobile} = useSidebar();
   const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+  const router = useRouter();
 
   return (
     <SidebarMenu>
@@ -39,6 +41,9 @@ export function TeamSwitcher({
             <SidebarMenuButton
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               size="lg"
+              onClick={() => {
+                router.push("/dashboard");
+              }}
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <activeTeam.logo className="size-4" />

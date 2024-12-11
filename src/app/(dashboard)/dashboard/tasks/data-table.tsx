@@ -64,9 +64,9 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
       <div className="flex items-center py-4">
         <Input
           className="max-w-sm"
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
+          placeholder="Filter titles..."
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          onChange={(event) => table.getColumn("title")?.setFilterValue(event.target.value)}
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

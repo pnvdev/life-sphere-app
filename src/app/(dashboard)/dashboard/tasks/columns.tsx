@@ -19,9 +19,9 @@ import {
 // You can use a Zod schema here if you want.
 export type Payment = {
   id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
+  title: string;
+  status: "backlog" | "todo" | "in progress" | "done" | "canceled";
+  priority: "low" | "medium" | "high";
 };
 
 export const columns: ColumnDef<Payment>[] = [
@@ -55,36 +55,48 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "id",
+    header: "Id",
+  },
+  {
+    accessorKey: "title",
+    header: "Title",
+  },
+  {
     accessorKey: "status",
     header: "Status",
   },
   {
-    accessorKey: "email",
-    header: ({column}) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    accessorKey: "priority",
+    header: "Priority",
   },
-  {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({row}) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
+  // {
+  //   accessorKey: "title",
+  //   header: ({column}) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Title
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  // },
+  // {
+  //   accessorKey: "status",
+  //   header: () => <div className="text-right">Status</div>,
+  //   cell: ({row}) => {
+  //     const amount = parseFloat(row.getValue("status"));
+  //     const formatted = new Intl.NumberFormat("en-US", {
+  //       style: "currency",
+  //       currency: "USD",
+  //     }).format(amount);
 
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
-  },
+  //     return <div className="text-right font-medium">{formatted}</div>;
+  //   },
+  // },
   {
     id: "actions",
     cell: ({row}) => {
@@ -101,7 +113,7 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>
-              Copy payment ID
+              Copy task ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
