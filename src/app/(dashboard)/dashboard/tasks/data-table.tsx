@@ -68,9 +68,10 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) => table.getColumn("title")?.setFilterValue(event.target.value)}
         />
+        <Button className="ml-auto">Add Task</Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="ml-auto" variant="outline">
+            <Button className="ml-5" variant="outline">
               Columns
             </Button>
           </DropdownMenuTrigger>
