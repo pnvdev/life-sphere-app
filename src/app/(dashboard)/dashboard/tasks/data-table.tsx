@@ -16,15 +16,26 @@ import {
 } from "@tanstack/react-table";
 
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {Button} from "@/components/ui/button";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {Label} from "@/components/ui/label";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Button} from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -81,14 +92,66 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
           <DialogTrigger asChild>
             <Button className="ml-auto">Add Task</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogTitle>Add Task</DialogTitle>
               <DialogDescription>
-                This action cannot be undone. This will permanently delete your account and remove
-                your data from our servers.
+                Create it with title, description, status and priority.
               </DialogDescription>
             </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label className="text-right" htmlFor="id">
+                  Id
+                </Label>
+                <Input className="col-span-3" id="id" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label className="text-right" htmlFor="title">
+                  Title
+                </Label>
+                <Input className="col-span-3" id="title" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label className="text-right" htmlFor="status">
+                  Status
+                </Label>
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select a Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="backlog">backlog</SelectItem>
+                      <SelectItem value="todo">todo</SelectItem>
+                      <SelectItem value="inprogress">in progress</SelectItem>
+                      <SelectItem value="done">done</SelectItem>
+                      <SelectItem value="canceled">canceled</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>{" "}
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label className="text-right" htmlFor="status">
+                  Priority
+                </Label>
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select a Priority" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="low">low</SelectItem>
+                      <SelectItem value="medium">medium</SelectItem>
+                      <SelectItem value="high">high</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
         <DropdownMenu>
