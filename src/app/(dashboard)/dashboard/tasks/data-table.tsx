@@ -15,6 +15,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Button} from "@/components/ui/button";
 import {
@@ -68,7 +76,21 @@ export function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, 
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) => table.getColumn("title")?.setFilterValue(event.target.value)}
         />
-        <Button className="ml-auto">Add Task</Button>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="ml-auto">Add Task</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. This will permanently delete your account and remove
+                your data from our servers.
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="ml-5" variant="outline">
